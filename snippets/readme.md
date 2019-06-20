@@ -41,3 +41,11 @@ const { fn, ln } = person;
 console.log(fn, ln);
 // Jogn Doe
 ```
+
+## array destructuring
+```
+const fin = [1, 1, 2, 3, 5, 8];
+
+const [p1, p2, p3] = fin;
+console.log(p1, p2, p3);
+```
