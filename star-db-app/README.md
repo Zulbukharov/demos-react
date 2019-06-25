@@ -10,3 +10,37 @@
 	содать переменные о состояниии
 5. Разделяйте ответственность компонентов:
 	логику и рендеринг
+
+
+# Жизненный цикл компонента React
+```
+* Создается компонент, вызывается его конструктор
+* Вызывается функция render, которая возвращает React дерево компонентов
+* Происходит процесс обновления
+* Компонент удаляется
+```
+
+> lifecycle hooks
+> componentWillUnmount = destructor
+
+## MOUNTING
+-------
+> constructor => render() => componentDidMount()
+> первоначальная инициализация, запрос к API
+> DOM элементы уже на странице и они проинициализированы
+
+## UPDATES
+-------
+> new props
+> 			=> render() => componentDidUpdate(prevProps, prevState)
+> setState
+
+> всегда проверять prevprops с this.props
+## UNMOUNTING
+-------
+> componentWillUnmount()
+> отменить текущий запрос к серверу, интервалы
+
+## ERROR
+-------
+> componentDidCatch()
