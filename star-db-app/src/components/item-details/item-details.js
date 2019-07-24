@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 
-import './person-details.css';
+import './item-details.css';
 import SwapiService from '../../services/swapi-service';
 import Spinner from '../spinner';
 import ErrorIndicator from '../error-indicator';
 
-export default class PersonDetails extends Component {
+export default class ItemDetails extends Component {
 	swapiService = new SwapiService();
 	state = {
-		person: null,
+		item: null,
+		image: null,
 		loading: false,
 		error: false,
 	};
 
 	componentDidMount() {
-		this.updatePerson();
+		this.updateItem();
 	};
 
 	onError = (err) => {
@@ -23,16 +24,17 @@ export default class PersonDetails extends Component {
 			loading: false
 		})
 	};
-	updatePerson() {
-		const { personId } = this.props;
-		if (!personId) {
+	updateItem() {
+		const { itemId, getData, getImageURL } = this.props;
+		if (!itemId) {
 			return;
 		}
-		this.swapiService
-			.getPerson(personId)
-			.then((person) => {
+
+		getData(itemId)
+			.then((item) => {
 				this.setState({
-					person,
+					item,
+					image: getImageURL(item),
 					loading: false,
 				});
 			})
@@ -43,39 +45,39 @@ export default class PersonDetails extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		if (this.props.personId != prevProps.personId) {
+		if (this.props.itemId !== prevProps.itemId) {
 			this.setState({
 				loading: true,
 			})
-			this.updatePerson();
+			this.updateItem();
 		}
 	};
 
 	render() {
-		const { person, loading, error } = this.state
-		const statePerson = !this.state.person && !loading ? <span>Choose a Person</span> : null;
-		const hasData = !(loading || error || statePerson);
+		const { item, loading, error, image } = this.state
+		const stateItem = !this.state.item && !loading ? <span>Choose a item</span> : null;
+		const hasData = !(loading || error || stateItem);
 		const errorMessage = error && !loading ? <ErrorIndicator /> : null;
 		const spinner = loading ? <Spinner /> : null;
-		const personView = hasData ? <PersonView person={person} /> : null;
+		const itemView = hasData ? <ItemView item={item} image={image} /> : null;
 		return (
-			<div className="person-details card">
-				{statePerson}
+			<div className="item-details card">
+				{stateItem}
 				{spinner}
-				{personView}
+				{itemView}
 				{errorMessage}
 			</div>
 		)
 	}
 }
 
-const PersonView = ({ person }) => {
-	const { id, name, gender, birthYear, eyeColor } = person;
+const ItemView = ({ item, image }) => {
+	const { name, gender, birthYear, eyeColor } = item;
 	return (
 		<React.Fragment>
-			<img className="person-image"
-				src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
-				alt="person" />
+			<img className="item-image"
+				src={image}
+				alt="item" />
 			<div className="card-body">
 				<h4>{name}</h4>
 				<ul className="list-group list-group-flush">
