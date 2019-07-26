@@ -6,8 +6,9 @@ class ErrorBoundry extends Component {
 	state = {
 		hasError: false
 	}
+
 	componentDidCatch() {
-		this.state({
+		this.setState({
 			hasError: true
 		});
 	};
