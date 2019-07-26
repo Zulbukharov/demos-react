@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 
 import './item-details.css';
 import SwapiService from '../../services/swapi-service';
-import Spinner from '../spinner';
-import ErrorIndicator from '../error-indicator';
-import ItemList from '../item-list';
 import ErrorButton from '../error-button';
 
 const Record = ({ item, label, field }) => {
@@ -42,7 +39,7 @@ export default class ItemDetails extends Component {
 		if (!itemId) {
 			return;
 		}
-
+		console.log(getData);
 		getData(itemId)
 			.then((item) => {
 				this.setState({
@@ -58,7 +55,8 @@ export default class ItemDetails extends Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		if (this.props.itemId !== prevProps.itemId) {
+		if (this.props.itemId !== prevProps.itemId ||
+			this.props.getData !== prevProps.getData) {
 			// this.setState({
 			// loading: true,
 			// })
