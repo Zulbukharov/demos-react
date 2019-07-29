@@ -30,4 +30,9 @@ class ItemList extends Component {
 	}
 }
 
+ItemList.defaultProps = {
+	onItemSelected: () => {
+	}
+};
+
 export default ItemList;

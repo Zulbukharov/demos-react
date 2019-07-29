@@ -30,7 +30,7 @@ export default class App extends Component {
 				<SwapiServiceProvider value={this.state.swapiService}>
 					<div>
 						<Header onServiceChange={this.onServiceChange} />
-						<RandomPlanet />
+						<RandomPlanet updateInterval={10000} />
 						<PeoplePage />
 						<PlanetPage />
 						<StarshipPage />

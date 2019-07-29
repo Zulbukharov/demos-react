@@ -19,7 +19,8 @@ export default class RandomPlanet extends Component {
 	};
 
 	componentDidMount() {
-		this.interval = setInterval(this.updatePlanet, 10000);
+		const { updateInterval } = this.props
+		this.interval = setInterval(this.updatePlanet, updateInterval);
 	}
 
 	onPlanetLoaded = (planet) => {
@@ -65,6 +66,10 @@ export default class RandomPlanet extends Component {
 
 		);
 	}
+}
+
+RandomPlanet.defaultProps = {
+	updateInterval: 10000
 }
 
 const PlanetView = ({ planet }) => {
