@@ -44,3 +44,24 @@
 ## ERROR
 -------
 > componentDidCatch()
+
+## React Router
+-------
+> npm install react-router-dom
+> import { BrowseRouter as Router, Route } from 'react-router-dom';
+```
+<Router>
+	<Route path="/" component={Component}>
+	render={() => {
+		return <h2>hello</h2>;
+	}}
+	exact={true} // точь такой же
+	// содержит ли path ту строку, если да, то вернуть компонент
+</Router>
+```
+
+> link
+```
+import { Link } from 'react-router-dom';
+<Link to="/people">People</Link>
+```

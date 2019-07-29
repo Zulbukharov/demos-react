@@ -5,6 +5,7 @@ import './random-planet.css';
 import ErrorIndicator from '../error-indicator';
 
 export default class RandomPlanet extends Component {
+
 	swapiService = new SwapiService();
 
 	constructor() {
@@ -20,6 +21,7 @@ export default class RandomPlanet extends Component {
 
 	componentDidMount() {
 		const { updateInterval } = this.props
+		this.updatePlanet();
 		this.interval = setInterval(this.updatePlanet, updateInterval);
 	}
 
@@ -68,8 +70,20 @@ export default class RandomPlanet extends Component {
 	}
 }
 
+// деволтные параметры
 RandomPlanet.defaultProps = {
 	updateInterval: 10000
+}
+
+// возвращение ошибки
+RandomPlanet.propTypes = {
+	updateInterval: (props, propName, componentName) => {
+		const value = props[propName];
+		if (typeof (value) == 'number' && !isNaN(value)) {
+			return null;
+		}
+		return new TypeError(`${componentName}: ${propName}`);
+	}
 }
 
 const PlanetView = ({ planet }) => {
