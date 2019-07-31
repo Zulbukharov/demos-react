@@ -1,24 +1,24 @@
 1. React ничего не знает о работе с сервером -
-	это задача других библиотек
-	в данном 
+это задача других библиотек
+в данном
 2. Сетевой код стоит изолировать от кода компонентов
-	service/swapi-service.js изолирует работу с сервером
-	
-3. Если необходимо трансформировать данные до того, как их получит компонент	выполнен в сетевом коде
+service/swapi-service.js изолирует работу с сервером
+
+3. Если необходимо трансформировать данные до того, как их получит компонент выполнен в сетевом коде
 4. Обрабатывайте состояния "загрузка" и "ошибка"
-	можно создать отдельный компонент, а в state главного компонента
-	содать переменные о состояниии
+можно создать отдельный компонент, а в state главного компонента
+создать переменные о состоянии
 5. Разделяйте ответственность компонентов:
-	логику и рендеринг
+логику и рендеринг
 
 
 # Жизненный цикл компонента React
-```
+
 * Создается компонент, вызывается его конструктор
 * Вызывается функция render, которая возвращает React дерево компонентов
 * Происходит процесс обновления
 * Компонент удаляется
-```
+
 
 > lifecycle hooks
 > componentWillUnmount = destructor
@@ -32,7 +32,7 @@
 ## UPDATES
 -------
 > new props
-> 			=> render() => componentDidUpdate(prevProps, prevState)
+>    => render() => componentDidUpdate(prevProps, prevState)
 > setState
 
 > всегда проверять prevprops с this.props
@@ -49,19 +49,53 @@
 -------
 > npm install react-router-dom
 > import { BrowseRouter as Router, Route } from 'react-router-dom';
-```
-<Router>
-	<Route path="/" component={Component}>
-	render={() => {
-		return <h2>hello</h2>;
-	}}
-	exact={true} // точь такой же
-	// содержит ли path ту строку, если да, то вернуть компонент
-</Router>
-```
+
+
+
+// содержит ли path ту строку, если да, то вернуть компонент
+
+render={() => {
+return
+hello
+;
+}}
+
+exact={true} // точь такой же
+
+
+
+
+>
+
+/app.js
+{
+const id = match.params.id;
+return
+}} />
+
+/starships-page.js
+import { withRouter } from 'react-router-dom';
+history.push( /starships/${itemId} )
+export default withRouter(StarshipPage);
+
+
+> опциональный параметр /:id?
+
+> Switch => Redirect if not exist
 
 > link
-```
+
 import { Link } from 'react-router-dom';
-<Link to="/people">People</Link>
-```
+People
+
+
+
+## REDUX
+
+> Redux решает проблему управления состоянием приложения
+
+> Redux предлагает хранить state в одном глобальном объекте
+
+> Функция Reducer обновляет глобальный state в ответ на Actions
+
+> Объект store координирует обновления
