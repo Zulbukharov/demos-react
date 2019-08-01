@@ -99,3 +99,18 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps)(Component);
 ```
+
+## mapDispatchToProps
+
+> второй аргумент для функции connect(state, dispatch)
+
+```
+const mapDispatchToProps = (dispatch) => {
+	return ({
+		inc: () => dispatch({type: 'INC'}),
+	});
+};
+```
+
+> Созданные функции будут переданы в компонент.
+> Таким способом, компонент может обновить состояние в store

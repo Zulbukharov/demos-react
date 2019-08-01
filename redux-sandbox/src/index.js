@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
-// import { dec, inc, rnd } from './actions';
-// import * as actions  from './actions';
 import reducer from './reducer';
-// import Counter from './components/counter';
 import { Provider } from 'react-redux';
 import App from './components/app';
+// import * as actions  from './actions';
+// import Counter from './components/counter';
+// import { dec, inc, rnd } from './actions';
 
 const store = createStore(reducer);
 // const { dispatch } = store;
