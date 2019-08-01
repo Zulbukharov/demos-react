@@ -1,22 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, bindActionCreators } from 'redux';
+import { createStore } from 'redux';
 // import { dec, inc, rnd } from './actions';
-import * as actions from './actions';
+// import * as actions  from './actions';
 import reducer from './reducer';
-import Counter from './counter';
+// import Counter from './components/counter';
+import { Provider } from 'react-redux';
+import App from './components/app';
 
 const store = createStore(reducer);
-const { dispatch } = store;
+// const { dispatch } = store;
 
 // const bindActionCreator = (creator, dispatch) => (...args) => {
 // 	return (dispatch(creator(...args)))
 // };
-const { incDispatch, decDispatch, rndDispatch } = bindActionCreators({
-	incDispatch: actions.inc,
-	decDispatch: actions.dec,
-	rndDispatch: actions.rnd,
-}, dispatch);
+// const { incDispatch, decDispatch, rndDispatch } = bindActionCreators({
+// 	incDispatch: actions.inc,
+// 	decDispatch: actions.dec,
+// 	rndDispatch: actions.rnd,
+// }, dispatch);
 
 // const incDispatch = bindActionCreator(inc, dispatch);
 // const decDispatch = bindActionCreator(dec, dispatch);
@@ -41,24 +43,20 @@ const { incDispatch, decDispatch, rndDispatch } = bindActionCreators({
 // 		rndDispatch(payload);
 // 	});
 
-const update = () => {
-	// document
-	// 	.getElementById('counter')
-	// 	.innerHTML = store.getState();
-	ReactDOM.render(<Counter
-		counter={store.getState()}
-		inc={incDispatch}
-		dec={decDispatch}
-		rnd={() => {
-			const payload = Math.floor(Math.random() * 10);
-			rndDispatch(payload);
-		}} />,
-		document.getElementById('root'));
-};
-update();
-store.subscribe(() => {
-	update();
-});
+// const update = () => {
+// document
+// 	.getElementById('counter')
+// 	.innerHTML = store.getState();
+ReactDOM.render(
+	<Provider store={store}>
+		<App />
+	</Provider>,
+	document.getElementById('root'));
+// };
+// update();
+// store.subscribe(() => {
+	// update();
+// });
 
 
 

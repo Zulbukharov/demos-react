@@ -82,3 +82,20 @@ const {add, remove} = bindActionsCreator(actions, dispatch);
 > React должен знать когда нужно обновлять 
 > компоненты (store.subscribe() сообщает о том,
 > что state обновился)
+
+> react-redux упрощает интеграция react + redux
+> Provider делает store доступным всему дереву компонентов
+
+> connect() - компонент высшего порядка, который передает
+> значения из store в компонент
+
+```
+const mapStateToProps = (state) => {
+	return {
+		name: state.name,
+		age: state.age,
+	};
+};
+
+export default connect(mapStateToProps)(Component);
+```
