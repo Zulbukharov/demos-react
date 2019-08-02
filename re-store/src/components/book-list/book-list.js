@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as actions from '../../actions';
+import Spinner from '../spinner';
 
 
 import { withBookstoreService } from '../hoc';
@@ -11,17 +12,16 @@ import './book-list.css';
 
 class BookList extends Component {
 	componentDidMount() {
-		// recieve data
 		const { bookstoreService } = this.props;
-		const data = bookstoreService.getBooks();
-		console.log(data);
-		// dispatch data
-		this.props.booksLoaded(data);
+		bookstoreService.getBooks()
+		.then((data) => this.props.booksLoaded(data));
 	};
 
 	render() {
-		const { books } = this.props;
-
+		const { books, loading } = this.props;
+		if (loading) {
+			return <Spinner/>
+		}
 		return (
 			<ul className="book-list">
 				{
@@ -36,9 +36,10 @@ class BookList extends Component {
 	}
 };
 
-const mapStateToProps = ({ books }) => {
+const mapStateToProps = ({ books, loading }) => {
 	return {
 		books: books,
+		loading: loading
 	}
 };
 
