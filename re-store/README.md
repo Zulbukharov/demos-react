@@ -62,3 +62,14 @@ const mapStateToProps = (state) => {
 	return (name: state.firstName);
 };
 ```
+
+## Dispatch
+
+> Чтобы получить данные из сервиса и передать их в Redux Store было использовано
+> два HOC
+
+> withBookstoreService получает сервис из контекстна и передает в компонент
+
+> connect оборачивает функцию dispatch из Redux Store
+
+> mapDispatchToProps может быть функцией или объектом
