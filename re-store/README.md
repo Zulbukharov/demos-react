@@ -36,5 +36,29 @@
 			<Router>
 				// application
 				<App/>
+```
 
+## Роутинг
+
+```
+// отрисовывает максимум один элемент
+<Switch>
+	// конфигурирует адрес "/"
+	<Route path="/" component={home} exact/>
+	// конфигурирет адрес "/cart"
+	<Route path="/cart" component={cart}>
+</Switch>
+```
+
+## Чтение данных из Redux в Store
+
+```
+const Person = ({name}) => {
+	return <p>{name}</p>;
+}
+
+// Эта функция определяет какие своя получить из Redux Store
+const mapStateToProps = (state) => {
+	return (name: state.firstName);
+};
 ```
