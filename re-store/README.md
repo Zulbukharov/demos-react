@@ -73,3 +73,28 @@ const mapStateToProps = (state) => {
 > connect оборачивает функцию dispatch из Redux Store
 
 > mapDispatchToProps может быть функцией или объектом
+
+## React: setState
+
+> Возвращает полное состояние
+
+```
+{ a: 0, b: 0} //initial state
+
+setState({a: 100});
+
+{ a: 100, b: 0}
+```
+
+## Redux: reducer()
+
+```
+{ a: 0, b: 0} //initial state
+
+const reducer = (state, action) => {
+	return {a: 100};
+	// return {...state, a: 100}
+}
+
+{ a: 100}
+```
