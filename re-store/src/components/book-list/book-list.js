@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BookListItem from '../book-list-item';
 import { connect } from 'react-redux';
 
-import {fetchBooks} from '../../actions';
+import { fetchBooks } from '../../actions';
 import Spinner from '../spinner';
 
 
@@ -10,7 +10,23 @@ import { withBookstoreService } from '../hoc';
 import './book-list.css';
 import ErrorIndicator from '../error-indicator';
 
-class BookList extends Component {
+const BookList = ({ books }) => {
+	return (
+		<ul className="book-list">
+			{
+				books.map((book) => {
+					return (
+						<li key={book.id}><BookListItem book={book} /></li>
+					)
+				})
+			}
+		</ul>
+	)
+};
+
+
+// оборачивает компонент для отображения, выполняет связть с компонентом
+class BookListContainer extends Component {
 	componentDidMount() {
 		this.props.fetchBooks();
 	};
@@ -18,22 +34,12 @@ class BookList extends Component {
 	render() {
 		const { books, loading, error } = this.props;
 		if (loading) {
-			return <Spinner/>
+			return <Spinner />
 		}
 		if (error) {
-			return <ErrorIndicator/>
+			return <ErrorIndicator />
 		}
-		return (
-			<ul className="book-list">
-				{
-					books.map((book) => {
-						return (
-							<li key={book.id}><BookListItem book={book} /></li>
-						)
-					})
-				}
-			</ul>
-		)
+		return <BookList books={books} />
 	}
 };
 
@@ -53,4 +59,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 
-export default withBookstoreService()(connect(mapStateToProps, mapDispatchToProps)(BookList));
+export default withBookstoreService()(connect(mapStateToProps, mapDispatchToProps)(BookListContainer));
