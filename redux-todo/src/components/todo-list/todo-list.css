@@ -1,0 +1,11 @@
+.todo-list {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	color: black;
+}
+
+.todo-list .todo-list-item {
+	flex: 1 0 21%;
+	margin: 5px;
+}
