@@ -1,0 +1,26 @@
+.user {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 2rem;
+}
+
+.user-image {
+	flex: 1;
+}
+
+.user-info {
+	flex: 1;
+	border: 1px solid silver;
+	display: flex;
+	flex-direction: column;
+	padding: 5rem 2rem 0 2rem;
+}
+
+.user-login {
+	font-size: 48px;
+	font-weight: bold;
+}
+
+.user-bio {
+	font-size: 24px;
+}

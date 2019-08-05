@@ -1,0 +1,14 @@
+.header {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.box:nth-child(1) {
+	margin-right: 20px;
+}
+
+
+.box:nth-child(1) img {
+	margin-right: 0.1rem;
+	border-radius: 50%;
+}
