@@ -1,5 +1,6 @@
 export default class GithubService {
-	_gateBase = "https://zulbukharov-gate.herokuapp.com/authenticate/";
+	// _gateBase = "https://zulbukharov-gate.herokuapp.com/authenticate/";
+	_gateBase = "http://localhost:3001/"
 	_apiBase = "https://api.github.com";
 	_token = '';
 
@@ -8,14 +9,20 @@ export default class GithubService {
 	}
 
 	getToken = async (code) => {
-		const res = await fetch(`${this._gateBase}${code}`);
+		const res = await fetch(`${this._gateBase}auth?code=${code}&state=sup`);
 
 		if (!res.ok) {
 			throw new Error(`Could not fetch ${this._gateBase}: ${res.status}`);
 		};
+
+		// refactor
 		const r = await res.json();
-		this._token = r.token;
-		return r;
+		console.log(typeof (r));
+		const result = JSON.parse(r)
+		console.log(result);
+		console.log(result.access_token);
+		this._token = result.access_token;
+		return result;
 	}
 
 	getResourse = async (url) => {

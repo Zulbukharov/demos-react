@@ -45,10 +45,16 @@ export default class Auth extends React.Component {
 	// 	return this.idToken;
 	// }
 
-	setSession({ token }) {
+	setSession({ access_token }) {
 		// Set isLoggedIn flag in localStorage
+		if (!access_token) {
+			this.setState({
+				isAuthenticated: false
+			});
+			return;
+		}
 		localStorage.setItem('isLoggedIn', 'true');
-		localStorage.setItem('token', token)
+		localStorage.setItem('token', access_token)
 
 		// Set the time that the access token will expire at
 		// let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
@@ -60,7 +66,7 @@ export default class Auth extends React.Component {
 		// history.replace('/');
 		this.setState({
 			isAuthenticated: true,
-			idToken: token
+			idToken: access_token
 		});
 	}
 
