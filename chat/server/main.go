@@ -14,9 +14,11 @@ import (
 	"fmt"
 	"time"
 
+	"net/http"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"net/http"
+
 	// "bytes"
 	"io/ioutil"
 	// "strconv"
@@ -45,15 +47,14 @@ func Cors() gin.HandlerFunc {
 	}
 }
 
-
 type HasuraClaims struct {
-	xHasuraDefaultRole		string		`form:"x-hasura-default-role" db:"x-hasura-default-role" json:"x-hasura-default-role"`
-	xHasuraAllowedRoles		[]string	`form:"x-hasura-allowed-roles" db:"x-hasura-allowed-roles" json:"x-hasura-allowed-roles"`
-	xHasuraUserId			string		`form:"x-hasura-user-id" db:"x-hasura-user-id" json:"x-hasura-user-id"`
+	xHasuraDefaultRole  string   `form:"x-hasura-default-role" db:"x-hasura-default-role" json:"x-hasura-default-role"`
+	xHasuraAllowedRoles []string `form:"x-hasura-allowed-roles" db:"x-hasura-allowed-roles" json:"x-hasura-allowed-roles"`
+	xHasuraUserId       string   `form:"x-hasura-user-id" db:"x-hasura-user-id" json:"x-hasura-user-id"`
 }
 
 type Claims struct {
-	HasuraClaims			map[string]interface{} `form:"https://hasura.io/jwt/claims" db:"https://hasura.io/jwt/claims" json:"https://hasura.io/jwt/claims"`
+	HasuraClaims map[string]interface{} `form:"https://hasura.io/jwt/claims" db:"https://hasura.io/jwt/claims" json:"https://hasura.io/jwt/claims"`
 	jwt.StandardClaims
 }
 
@@ -65,9 +66,9 @@ func GenerateToken(id string) (string, error) {
 	a[0] = "user"
 	claims := &Claims{
 		map[string]interface{}{
-			"x-hasura-default-role": "user",
+			"x-hasura-default-role":  "user",
 			"x-hasura-allowed-roles": a,
-			"x-hasura-user-id": "1",
+			"x-hasura-user-id":       "1",
 		},
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
@@ -96,7 +97,6 @@ func ParseToken(token string) (*Claims, error) {
 
 	return nil, err
 }
-
 
 func jsonPrettyPrint(in []byte) string {
 	var out bytes.Buffer
@@ -169,34 +169,35 @@ func getUsers() (users []User, err error) {
 	return data["user"], err
 }
 
-func main() {
-	fmt.Println(getUsers())
-}
-
+// func main() {
+// 	fmt.Println(getUsers())
+// }
 
 func GithubAuth(c *gin.Context) {
 	url := "https://github.com/login/oauth/access_token"
-    fmt.Println("URL:>", url)
+	fmt.Println("URL:>", url)
 	code := c.Query("code")
+	client_id := "s"
+	client_secret := "s"
 	var json = fmt.Sprintf(`%s?client_id=%s&client_secret=%s&code=%s&state=sup`, url, client_id, client_secret, code)
-    req, err := http.NewRequest("POST", json, nil)
-    req.Header.Set("Accept", "application/json")
+	req, err := http.NewRequest("POST", json, nil)
+	req.Header.Set("Accept", "application/json")
 
-    client := &http.Client{}
-    resp, err := client.Do(req)
-    if err != nil {
-        panic(err)
-    }
-    defer resp.Body.Close()
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
 
 	fmt.Println("response Status:", resp.Status)
-	if (resp.Status != "200 OK") {
+	if resp.Status != "200 OK" {
 		fmt.Println("hi")
 		c.JSON(404, gin.H{"status": "Error"})
 	}
-    fmt.Println("response Headers:", resp.Header)
-    body, _ := ioutil.ReadAll(resp.Body)
-    fmt.Println("response Body:", string(body))
+	fmt.Println("response Headers:", resp.Header)
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println("response Body:", string(body))
 	c.JSON(200, string(body))
 }
 
