@@ -15,7 +15,7 @@ const Login = () => (
 			<div className="overlay-action">
 
 				<a
-					href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}&state=sup`}>
+					href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}>
 					Login
                     </a>
 			</div>
