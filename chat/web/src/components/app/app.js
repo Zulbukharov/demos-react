@@ -4,8 +4,10 @@ import Header from '../header';
 import './app.css'
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { WebSocketLink } from 'apollo-link-ws';
 import { ApolloProvider } from 'react-apollo';
+import Sidebar from '../sidebar';
+import Chat from '../chat';
 
 export default class App extends Component {
 	githubService = new GithubService();
@@ -26,20 +28,18 @@ export default class App extends Component {
 
 		return new ApolloClient({
 
-			link: new HttpLink({
-
-				uri: 'http://testing-app-1997.herokuapp.com/v1alpha1/graphql',
-
-				headers: {
-
-					Authorization: `Bearer ${authToken}`
-
+			link: new WebSocketLink({
+				uri: 'wss://testing-app-1997.herokuapp.com/v1alpha1/graphql',
+				options: {
+					reconnect: true,
+					connectionParams: {
+						headers: {
+							Authorization: `Bearer ${authToken}`,
+						}
+					}
 				}
-
 			}),
-
 			cache: new InMemoryCache(),
-
 		});
 
 	};
@@ -65,18 +65,17 @@ export default class App extends Component {
 		const jwt_token = localStorage.getItem('jwt')
 		const client = this.createApolloClient(jwt_token)
 		return (
-			<React.Fragment>
-				<Header logout={this.props.auth.logout} />
-				<div className="container user">
-					<div className="user-image">
-						<img src={avatar_url} alt="avatar" />
-					</div>
-					<div className="user-info">
-						<h2 className="user-login">{login}</h2>
-						<h3 className="user-bio">{bio}</h3>
-					</div>
+			<ApolloProvider client={client}>
+				<Header logout={this.props.auth.logout} avatar_url={avatar_url} />
+				<div className="chat-container">
+					<Sidebar />
+					<Chat login={login} />
 				</div>
-			</React.Fragment>
+				{/* <div className="container user"> */}
+				{/* <TodosQuery /> */}
+
+				{/* </div> */}
+			</ApolloProvider>
 		)
 	}
 }
