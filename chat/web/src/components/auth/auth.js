@@ -1,9 +1,8 @@
 import React from 'react';
 import App from '../app';
-import Login from './login';
+import Login from '../login';
 import Callback from './callback';
 import GithubService from '../../services/github-service';
-import cookie from "react-cookie";
 
 export default class Auth extends React.Component {
 
@@ -35,7 +34,8 @@ export default class Auth extends React.Component {
 		localStorage.setItem('token', access_token)
 		localStorage.setItem('jwt', jwt_token)
 
-		// history.replace('/');
+		window.location.replace("http://localhost:3000/");
+
 		this.setState({
 			isAuthenticated: true,
 			idToken: access_token
@@ -48,6 +48,9 @@ export default class Auth extends React.Component {
 		localStorage.removeItem('jwt');
 
 		// history.replace('/');
+
+		window.location.replace("http://localhost:3000/");
+
 		this.setState({
 			isAuthenticated: false,
 			idToken: null
@@ -73,6 +76,7 @@ export default class Auth extends React.Component {
 	}
 
 	render() {
+		console.log(this.props);
 		if (this.state.isAuthenticated === 'loading') {
 			return (<Callback {...this.props} />);
 		}

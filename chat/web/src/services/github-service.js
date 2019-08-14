@@ -8,20 +8,29 @@ export default class GithubService {
 		this._token = localStorage.getItem('token');
 	}
 
-	getToken = async (code) => {
-		const res = await fetch(`${this._gateBase}auth?code=${code}&state=sup`);
+	generateJwtToken = async () => {
+		const code = localStorage.getItem('token');
+		const res = await fetch(`${this._gateBase}generateToken?code=${code}`);
 
 		if (!res.ok) {
 			throw new Error(`Could not fetch ${this._gateBase}: ${res.status}`);
 		};
 
+		const r = await res.json();
+		console.log(r);
+		return r
+	};
+
+	getToken = async (code) => {
+		const res = await fetch(`${this._gateBase}auth?code=${code}&state=sup`);
+
+		if (!res.ok) {
+		};
+
 		// refactor
 		const r = await res.json();
-		console.log(typeof (r));
-		const result = JSON.parse(r)
-		console.log(result);
-		console.log(result.access_token);
-		this._token = result.access_token;
+		console.log(r);
+		const result = JSON.parse(r);
 		return result;
 	}
 

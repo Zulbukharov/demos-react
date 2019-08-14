@@ -25,8 +25,6 @@ mutation insertUser ($message: String!) {
   }
 `;
 
-// document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
-
 class Chat extends Component {
 	render() {
 		let input;
@@ -35,13 +33,17 @@ class Chat extends Component {
 		return (
 			<div className="chat" id="chat">
 				<div className="chat-body">
-					<Subscription subscription={SUBSCRIPTION_MESSAGES}>
+					<Subscription subscription={SUBSCRIPTION_MESSAGES} onSubscriptionData={() => {
+						const objDiv = document.getElementById("chat");
+						objDiv.scrollTop = objDiv.scrollHeight;
+					}}>
 						{
 							({ loading, error, data }) => {
 								if (loading) {
 									return (<span>loading...</span>);
 								}
 								if (error) {
+									console.log(error)
 									return (<span>error...</span>);
 								}
 								return (

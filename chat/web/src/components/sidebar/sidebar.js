@@ -28,7 +28,7 @@ class Sidebar extends Component {
 						return (
 							data.users.map((user) => {
 								return (
-									<div className="user">
+									<div className="user" key={user.id}>
 										<img className="user-avatar" src="https://picsum.photos/50/50" />
 										<p className="user-login">{user.name}</p>
 									</div>
