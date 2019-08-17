@@ -1,6 +1,6 @@
 import React from 'react';
 import App from '../app';
-import Login from './login';
+import Login from '../login';
 import Callback from './callback';
 import GithubService from '../../services/github-service';
 
@@ -23,7 +23,11 @@ export default class Auth extends React.Component {
 			})
 	};
 
+<<<<<<< HEAD
 	setSession({ access_token }) {
+=======
+	setSession({ access_token, jwt_token }) {
+>>>>>>> 61f683f950ec588bc0eb38bc16c7dddba3dce801
 		if (!access_token) {
 			this.setState({
 				isAuthenticated: false
@@ -32,6 +36,13 @@ export default class Auth extends React.Component {
 		}
 		localStorage.setItem('isLoggedIn', 'true');
 		localStorage.setItem('token', access_token)
+<<<<<<< HEAD
+=======
+		localStorage.setItem('jwt', jwt_token)
+
+		window.location.replace("http://localhost:3000/");
+
+>>>>>>> 61f683f950ec588bc0eb38bc16c7dddba3dce801
 		this.setState({
 			isAuthenticated: true,
 			idToken: access_token
@@ -41,6 +52,15 @@ export default class Auth extends React.Component {
 	logout = () => {
 		localStorage.removeItem('isLoggedIn');
 		localStorage.removeItem('token');
+<<<<<<< HEAD
+=======
+		localStorage.removeItem('jwt');
+
+		// history.replace('/');
+
+		window.location.replace("http://localhost:3000/");
+
+>>>>>>> 61f683f950ec588bc0eb38bc16c7dddba3dce801
 		this.setState({
 			isAuthenticated: false,
 			idToken: null
@@ -54,6 +74,10 @@ export default class Auth extends React.Component {
 			console.log(code);
 			this.handleAuthentication(code);
 		}
+<<<<<<< HEAD
+=======
+		console.log(localStorage.getItem('token'))
+>>>>>>> 61f683f950ec588bc0eb38bc16c7dddba3dce801
 		if (localStorage.getItem('token')) {
 			this.setState({
 				isAuthenticated: true,
@@ -63,6 +87,7 @@ export default class Auth extends React.Component {
 	}
 
 	render() {
+		console.log(this.props);
 		if (this.state.isAuthenticated === 'loading') {
 			return (<Callback {...this.props} />);
 		}

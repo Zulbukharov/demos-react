@@ -1,6 +1,7 @@
 .header {
 	display: flex;
 	justify-content: flex-end;
+	background-color: #1e1e20;
 }
 
 .box:nth-child(1) {

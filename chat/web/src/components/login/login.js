@@ -1,7 +1,8 @@
 import React from "react";
+import './login.css';
 
 const CLIENT_ID = "eb2e5a2441c30d513a70";
-const REDIRECT_URI = "http://localhost:3000/";
+const REDIRECT_URI = "http://localhost:3000/code";
 
 const Login = () => (
 	<div className="overlay">
@@ -15,7 +16,7 @@ const Login = () => (
 			<div className="overlay-action">
 
 				<a
-					href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}&state=sup`}>
+					href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}>
 					Login
                     </a>
 			</div>
