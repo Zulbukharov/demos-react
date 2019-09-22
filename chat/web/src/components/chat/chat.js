@@ -29,6 +29,7 @@ class Chat extends Component {
 	render() {
 		let input;
 
+
 		const { login } = this.props;
 		return (
 			<div className="chat" id="chat">
