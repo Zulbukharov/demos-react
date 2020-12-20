@@ -1,23 +1,14 @@
-import "./App.css";
 import Header from "./components/Header";
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="App">
-      <nav></nav>
-      <main>
-        <section className="medium-container">
-          <h2>Todos</h2>
-          <div className="todoapp">
-            <Header />
-            <TodoList />
-            <Footer />
-          </div>
-        </section>
-      </main>
-    </div>
+    <section className="px-4 sm:px-6 lg:px-4 xl:px-6 pt-4 pb-4 sm:pb-6 lg:pb-4 xl:pb-6 space-y-4">
+      <Header />
+      <TodoList />
+      <Footer />
+    </section>
   );
 }
 

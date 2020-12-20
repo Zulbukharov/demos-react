@@ -1,9 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
 import { Provider } from "react-redux";
+
+import App from "./App";
+import "./index.css";
 import store from "./store";
+import { fetchTodos } from "./app/todos";
+
+import "./api/server";
+
+store.dispatch(fetchTodos);
 
 ReactDOM.render(
   <React.StrictMode>
