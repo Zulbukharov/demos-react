@@ -12,6 +12,8 @@ const initialState = {
   colors: [],
 };
 
+// {type: 'filters/statusFilterChanged', payload: filterValue}
+// {type: 'filters/colorFilterChanged', payload: {color, changeType}}
 const filtersReducer = (state = initialState, action) => {
   switch (action.type) {
     case "filters/statusFilterChanged":
@@ -19,9 +21,35 @@ const filtersReducer = (state = initialState, action) => {
         ...state,
         status: action.payload,
       };
+    case "filters/colorFilterChanged":
+      switch (action.payload.changeType) {
+        case false:
+          return {
+            ...state,
+            colors: state.colors.splice(
+              state.colors.indexOf(action.payload.color),
+              1
+            ),
+          };
+        case true:
+          console.log("s");
+          return {
+            ...state,
+            colors: [...state.colors, action.payload.color],
+          };
+        default:
+          return state;
+      }
     default:
       return state;
   }
+};
+
+export const colorFilterChanged = (color, changeType) => {
+  return {
+    type: "filters/colorFilterChanged",
+    payload: { color, changeType },
+  };
 };
 
 export default filtersReducer;

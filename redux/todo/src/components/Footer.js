@@ -1,17 +1,59 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { availableColors, capitalize, StatusFilters } from "../app/filters";
+import {
+  availableColors,
+  capitalize,
+  StatusFilters,
+  colorFilterChanged,
+} from "../app/filters";
+
+const StatusBox = ({ status, handleStatusSelect }) => {
+  return (
+    <div>
+      <span className="text-gray-700">Filter by status</span>
+      <div className="mt-2 flex flex-col">
+        {Object.keys(StatusFilters).map((item, i) => (
+          <label className="block inline-flex items-center" key={i}>
+            <input
+              type="radio"
+              className="form-radio"
+              value={StatusFilters[item]}
+              name="status"
+              checked={StatusFilters[item] === status}
+              onChange={handleStatusSelect}
+            />
+            <span className="ml-2">{item}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Footer = () => {
+  const dispatcher = useDispatch();
+
   const todosRemaining = useSelector((state) => {
     const uncompletedTodos = state.todos.filter((todo) => !todo.completed);
     return uncompletedTodos.length;
   });
 
-  const { status, colors } = useSelector((state) => state.filters);
+  const handleStatusSelect = (e) =>
+    dispatcher({
+      type: "filters/statusFilterChanged",
+      payload: e.target.value,
+    });
 
-  console.log(availableColors, StatusFilters);
+  const handleColorsChange = (e) => {
+    const {
+      target: { value, checked },
+    } = e;
+    dispatcher(colorFilterChanged(value, checked));
+  };
+
+  const { status, colors } = useSelector((state) => state.filters);
+  //   console.log(colors);
   return (
     <footer>
       <div className="flex justify-between">
@@ -22,18 +64,23 @@ const Footer = () => {
         </div>
         <div>
           <h3>Remaining Todos</h3>
-          <h4>{todosRemaining}</h4>
+          <h4>{todosRemaining} items left</h4>
         </div>
+        <StatusBox status={status} handleStatusSelect={handleStatusSelect} />
         <div>
-          <h3>Filter by status</h3>
-          {Object.keys(StatusFilters).map((s, i) => (
-            <h4 key={i}>{s}</h4>
-          ))}
-        </div>
-        <div>
-          <h3>Filter by Color</h3>
+          <span className="text-gray-700">Filter by Color</span>
           {availableColors.map((color, index) => (
-            <h5 key={index}>{color}</h5>
+            <div key={index}>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox"
+                  onChange={handleColorsChange}
+                  value={color}
+                />
+                <span className="ml-2">{color}</span>
+              </label>
+            </div>
           ))}
         </div>
       </div>
