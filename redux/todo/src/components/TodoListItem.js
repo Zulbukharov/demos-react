@@ -19,19 +19,26 @@ const TodoListItem = ({ id }) => {
     <li>
       <span className="group block rounded-lg p-4 border border-gray-200">
         <dl className="grid sm:block lg:grid xl:block grid-cols-3 grid-rows-1 items-center">
-          <div>
-            <dt className="sr-only">Text</dt>
-            <dd className="leading-6 font-medium text-black md:text-center break-all">
-              {text}
-            </dd>
-          </div>
-          <div onClick={handleCompletedChanged}>
+          <dd className="leading-6 font-medium text-black break-all">{text}</dd>
+          <button
+            onClick={handleCompletedChanged}
+            className="bg-green-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
+          >
+            <span>{completed ? "completed" : "complete"}</span>
+          </button>
+          <button
+            onClick={handleRemove}
+            className=" bg-red-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
+          >
+            <span>Remove</span>
+          </button>
+          {/* <div onClick={handleCompletedChanged}>
             <dt className="sr-only">Done</dt>
             <dd className=" text-sm font-medium sm:mb-4 lg:mb-0 xl:mb-4">
               {completed ? "completed " : "!completed "}
             </dd>
-          </div>
-          <div onClick={handleRemove}>Delete</div>
+          </div> */}
+          {/* <div onClick={handleRemove}>Delete</div> */}
         </dl>
       </span>
     </li>
