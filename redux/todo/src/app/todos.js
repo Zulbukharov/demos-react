@@ -1,4 +1,12 @@
 import { client } from "../api/client";
+import { createSelector } from "reselect";
+import { StatusFilters } from "./filters";
+
+/*
+Memoization is a kind of caching - specifically, 
+saving the results of an expensive calculation, 
+and reusing those results if we see the same inputs later.
+*/
 
 // Default state and data types
 // id: a unique number
@@ -21,6 +29,12 @@ const todoAppState = [];
 // Choose a different "completed" filter value
 // Add a new color filter
 // Remove a color filter
+// {type: 'todos/todoAdded', payload: todoText}
+// {type: 'todos/todoToggled', payload: todoId}
+// {type: 'todos/colorSelected, payload: {todoId, color}}
+// {type: 'todos/todoDeleted', payload: todoId}
+// {type: 'todos/allCompleted'}
+// {type: 'todos/completedCleared'}
 const todosReducer = (state = todoAppState, action) => {
   switch (action.type) {
     case "todos/todoAdded":
@@ -31,6 +45,13 @@ const todosReducer = (state = todoAppState, action) => {
           ? todo
           : { ...todo, completed: !todo.completed }
       );
+    case "todos/colorSelected":
+      console.log("ok");
+      return state.map((todo) => {
+        todo.color =
+          todo.id === action.payload.todoId ? action.payload.color : todo.color;
+        return todo;
+      });
     case "todos/todoRemove":
       return state.filter((todo) => todo.id !== action.payload);
     case "todos/todosLoaded":
@@ -59,4 +80,48 @@ const saveTodo = (text) => {
   return saveNewTodoThunk;
 };
 
-export { fetchTodos, todosReducer, saveTodo };
+// will return list todo ids
+const selectTodoIds = createSelector(
+  (state) => state.todos,
+  (todos) => todos.map((todo) => todo.id)
+);
+
+// will return list of filterd todos
+const selectFilteredTodos = createSelector(
+  (state) => state.todos,
+  (state) => state.filters,
+  (todos, { status, colors }) => {
+    if (status === StatusFilters.All) return todos;
+    const completed = status === StatusFilters.Completed ? true : false;
+    console.log(colors, colors.includes("green"));
+    return todos.filter(
+      (todo) =>
+        todo.completed === completed &&
+        (colors.includes(todo.color) || todo.color === "")
+    );
+  }
+);
+
+// will call selectFilteredTodos and return ids
+const selectFilteredTodoIds = createSelector(
+  selectFilteredTodos,
+  (filteredTodos) => filteredTodos.map((todo) => todo.id)
+);
+
+const todosColorChanged = (todoId, color) => {
+  console.log(todoId, color);
+  return {
+    type: "todos/colorSelected",
+    payload: { todoId, color },
+  };
+};
+
+export {
+  fetchTodos,
+  todosReducer,
+  saveTodo,
+  selectTodoIds,
+  selectFilteredTodos,
+  selectFilteredTodoIds,
+  todosColorChanged,
+};

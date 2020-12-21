@@ -32,7 +32,6 @@ const filtersReducer = (state = initialState, action) => {
             ),
           };
         case true:
-          console.log("s");
           return {
             ...state,
             colors: [...state.colors, action.payload.color],

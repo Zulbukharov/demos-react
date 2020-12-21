@@ -1,6 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import { todosColorChanged } from "../app/todos";
+import { availableColors } from "../app/filters";
+
 const findTodoByID = (state, id) => state.todos.find((todo) => todo.id === id);
 
 const TodoListItem = ({ id }) => {
@@ -14,6 +17,10 @@ const TodoListItem = ({ id }) => {
 
   const handleRemove = () =>
     dispatch({ type: "todos/todoRemove", payload: id });
+
+  const handleColorChange = ({ target: { value } }) => {
+    dispatch(todosColorChanged(value, todo.id));
+  };
 
   return (
     <li>
@@ -32,6 +39,14 @@ const TodoListItem = ({ id }) => {
           >
             <span>Remove</span>
           </button>
+          <select onChange={handleColorChange}>
+            {availableColors.map((color, i) => (
+              <option value={color} key={i}>
+                {color}
+              </option>
+            ))}
+            <option value="red"></option>
+          </select>
           {/* <div onClick={handleCompletedChanged}>
             <dt className="sr-only">Done</dt>
             <dd className=" text-sm font-medium sm:mb-4 lg:mb-0 xl:mb-4">
