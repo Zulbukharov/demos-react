@@ -53,46 +53,9 @@ const TodoListItem = ({ id }) => {
               ))}
             </select>
           </div>
-
-          {/* <div className="h-4 bg-blue-400 rounded"></div>
-            <div className="h-4 bg-blue-400 rounded w-5/6"></div> */}
         </div>
       </div>
     </div>
-    // <li>
-    //   <span className="group block rounded-lg p-4 border border-gray-200">
-    //     <dl className="grid sm:block lg:grid xl:block grid-cols-3 grid-rows-1 items-center">
-    //       <dd className="leading-6 font-medium text-black break-all"></dd>
-    //       <button
-    //         onClick={handleCompletedChanged}
-    //         className="bg-green-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
-    //       >
-    //         <span>{completed ? "completed" : "complete"}</span>
-    //       </button>
-    //       <button
-    //         onClick={handleRemove}
-    //         className=" bg-red-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
-    //       >
-    //         <span>Remove</span>
-    //       </button>
-    //       <select onChange={handleColorChange} defaultValue={todo.color}>
-    //         <option value=""></option>
-    //         {availableColors.map((color, i) => (
-    //           <option value={color} key={i}>
-    //             {color}
-    //           </option>
-    //         ))}
-    //       </select>
-    //       {/* <div onClick={handleCompletedChanged}>
-    //         <dt className="sr-only">Done</dt>
-    //         <dd className=" text-sm font-medium sm:mb-4 lg:mb-0 xl:mb-4">
-    //           {completed ? "completed " : "!completed "}
-    //         </dd>
-    //       </div> */}
-    //       {/* <div onClick={handleRemove}>Delete</div> */}
-    //     </dl>
-    //   </span>
-    // </li>
   );
 };
 
