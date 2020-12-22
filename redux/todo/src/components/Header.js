@@ -5,19 +5,26 @@ import { saveTodo } from "../app/todos";
 
 const Header = () => {
   const [text, setText] = useState("");
+  const [status, setStatus] = useState("idle");
   const dispatch = useDispatch(); // create dispatcher, that will call reducer
 
   const handleChange = (e) => setText(e.target.value);
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = async (e) => {
     const trimmedText = e.target.value.trim();
     if (e.which === 13 && trimmedText) {
+      setStatus("loading");
       saveTodo(trimmedText);
       const saveTodoThunk = saveTodo(trimmedText);
-      dispatch(saveTodoThunk);
+      await dispatch(saveTodoThunk);
       setText("");
+      setStatus("idle");
     }
   };
+
+  const isLoading = status === "loading";
+  let placeholder = isLoading ? "" : "what need to be done";
+  let loader = isLoading ? <div className="lds-dual-ring"></div> : null;
 
   return (
     <>
@@ -25,28 +32,22 @@ const Header = () => {
         <h2 className="text-lg leading-6 font-medium text-black">Todos</h2>
       </header>
       <form className="relative" onSubmit={(e) => e.preventDefault()}>
-        <svg
-          width="20"
-          height="20"
-          fill="currentColor"
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-        >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M6 5a1 1 0 011 1v3h3a1 1 0 110 2H7v3a1 1 0 11-2 0v-3H2a1 1 0 110-2h3V6a1 1 0 011-1z"
-          />
-        </svg>
-        <input
-          className="focus:border-light-blue-500 focus:ring-1 focus:ring-light-blue-500 focus:outline-none w-full text-sm text-black placeholder-gray-500 border border-gray-200 rounded-md py-2 pl-10"
-          type="text"
-          aria-label="what needs to be done"
-          placeholder="what needs to be done"
-          autoFocus={true}
-          value={text}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-        />
+        <div className="flex">
+          <div className="w-full">
+            <input
+              className="focus:border-light-blue-500 focus:ring-1 focus:ring-light-blue-500 focus:outline-none w-full text-sm text-black placeholder-gray-500 border border-gray-200 rounded-md py-2 pl-10"
+              type="text"
+              aria-label="what needs to be done"
+              placeholder={placeholder}
+              autoFocus={true}
+              value={text}
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              disabled={isLoading}
+            />
+          </div>
+          <div>{loader}</div>
+        </div>
       </form>
     </>
   );

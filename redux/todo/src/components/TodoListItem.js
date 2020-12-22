@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { todosColorChanged } from "../app/todos";
 import { availableColors } from "../app/filters";
 
-const findTodoByID = (state, id) => state.todos.find((todo) => todo.id === id);
+const findTodoByID = (state, id) =>
+  state.todos.entities.find((todo) => todo.id === id);
 
 const TodoListItem = ({ id }) => {
   const todo = useSelector((state) => findTodoByID(state, id));
@@ -23,40 +24,75 @@ const TodoListItem = ({ id }) => {
   };
 
   return (
-    <li>
-      <span className="group block rounded-lg p-4 border border-gray-200">
-        <dl className="grid sm:block lg:grid xl:block grid-cols-3 grid-rows-1 items-center">
-          <dd className="leading-6 font-medium text-black break-all">{text}</dd>
-          <button
-            onClick={handleCompletedChanged}
-            className="bg-green-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
-          >
-            <span>{completed ? "completed" : "complete"}</span>
-          </button>
-          <button
-            onClick={handleRemove}
-            className=" bg-red-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
-          >
-            <span>Remove</span>
-          </button>
-          <select onChange={handleColorChange} defaultValue={todo.color}>
-            <option value=""></option>
-            {availableColors.map((color, i) => (
-              <option value={color} key={i}>
-                {color}
-              </option>
-            ))}
-          </select>
-          {/* <div onClick={handleCompletedChanged}>
-            <dt className="sr-only">Done</dt>
-            <dd className=" text-sm font-medium sm:mb-4 lg:mb-0 xl:mb-4">
-              {completed ? "completed " : "!completed "}
-            </dd>
-          </div> */}
-          {/* <div onClick={handleRemove}>Delete</div> */}
-        </dl>
-      </span>
-    </li>
+    <div className="border border-blue-500 shadow rounded-md p-4 w-full mx-auto">
+      <div className="flex space-x-4">
+        <div className="flex-1 space-y-4 py-1">
+          {/* <div className="h-4 bg-blue-400 rounded w-3/4"></div> */}
+          <div className="w-1/2">
+            <p className="leading-6 font-medium text-black break-all">{text}</p>
+          </div>
+          <div className="w-1/2">
+            <button
+              onClick={handleCompletedChanged}
+              className="bg-green-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
+            >
+              <span>{completed ? "completed" : "complete"}</span>
+            </button>
+            <button
+              onClick={handleRemove}
+              className=" bg-red-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
+            >
+              <span>Remove</span>
+            </button>
+            <select onChange={handleColorChange} defaultValue={todo.color}>
+              <option value=""></option>
+              {availableColors.map((color, i) => (
+                <option value={color} key={i}>
+                  {color}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* <div className="h-4 bg-blue-400 rounded"></div>
+            <div className="h-4 bg-blue-400 rounded w-5/6"></div> */}
+        </div>
+      </div>
+    </div>
+    // <li>
+    //   <span className="group block rounded-lg p-4 border border-gray-200">
+    //     <dl className="grid sm:block lg:grid xl:block grid-cols-3 grid-rows-1 items-center">
+    //       <dd className="leading-6 font-medium text-black break-all"></dd>
+    //       <button
+    //         onClick={handleCompletedChanged}
+    //         className="bg-green-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
+    //       >
+    //         <span>{completed ? "completed" : "complete"}</span>
+    //       </button>
+    //       <button
+    //         onClick={handleRemove}
+    //         className=" bg-red-400 hover:bg-grey text-grey-darkest border-black font-bold py-2 px-4 rounded inline-flex"
+    //       >
+    //         <span>Remove</span>
+    //       </button>
+    //       <select onChange={handleColorChange} defaultValue={todo.color}>
+    //         <option value=""></option>
+    //         {availableColors.map((color, i) => (
+    //           <option value={color} key={i}>
+    //             {color}
+    //           </option>
+    //         ))}
+    //       </select>
+    //       {/* <div onClick={handleCompletedChanged}>
+    //         <dt className="sr-only">Done</dt>
+    //         <dd className=" text-sm font-medium sm:mb-4 lg:mb-0 xl:mb-4">
+    //           {completed ? "completed " : "!completed "}
+    //         </dd>
+    //       </div> */}
+    //       {/* <div onClick={handleRemove}>Delete</div> */}
+    //     </dl>
+    //   </span>
+    // </li>
   );
 };
 

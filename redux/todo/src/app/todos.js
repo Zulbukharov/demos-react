@@ -13,11 +13,20 @@ and reusing those results if we see the same inputs later.
 // text: the text the user typed in
 // completed: a boolean flag
 // color: An optional color category
-const todoAppState = [];
+const todoAppState = {
+  status: "idle", // loading, succeded, failed
+  entities: [],
+};
 
 // helper function to get last id
 // const nextTodoID = (todos) =>
 //   todos.reduce((maxId, todo) => Math.max(maxId, todo.id), -1) + 1;
+
+// The FSA convention says that:
+
+// If your action object has any actual data, that "data" value of your action should always go in action.payload
+// An action may also have an action.meta field with extra descriptive data
+// An action may have an action.error field with error information
 
 // Actions
 // Add a new todo entry based on the text the user entered
@@ -37,41 +46,63 @@ const todoAppState = [];
 // {type: 'todos/completedCleared'}
 const todosReducer = (state = todoAppState, action) => {
   switch (action.type) {
-    case "todos/todoAdded":
-      return [...state, action.payload];
-    case "todos/todoToogled":
-      return state.map((todo) =>
-        todo.id !== action.payload
-          ? todo
-          : { ...todo, completed: !todo.completed }
-      );
-    case "todos/colorSelected":
-      console.log("ok");
-      return state.map((todo) => {
-        todo.color =
-          todo.id === action.payload.todoId ? action.payload.color : todo.color;
-        console.log(
-          `1:${todo.color} 2:${todo.id} 3:${action.payload.todoId} 4:${action.payload.color}`
-        );
-        return todo;
-      });
-    case "todos/todoRemove":
-      return state.filter((todo) => todo.id !== action.payload);
+    case "todos/todosLoading":
+      return {
+        ...state,
+        status: "loading",
+      };
     case "todos/todosLoaded":
-      return action.payload;
+      return {
+        ...state,
+        status: "idle",
+        entities: action.payload,
+      };
+    case "todos/todoAdded":
+      return {
+        ...state,
+        entities: [...state.entities, action.payload],
+      };
+    case "todos/todoToogled":
+      return {
+        ...state,
+        entities: state.entities.map((todo) =>
+          todo.id !== action.payload
+            ? todo
+            : { ...todo, completed: !todo.completed }
+        ),
+      };
+    case "todos/colorSelected":
+      return {
+        ...state,
+        entities: state.entities.map((todo) => {
+          todo.color =
+            todo.id === action.payload.todoId
+              ? action.payload.color
+              : todo.color;
+          console.log(
+            `1:${todo.color} 2:${todo.id} 3:${action.payload.todoId} 4:${action.payload.color}`
+          );
+          return todo;
+        }),
+      };
+    case "todos/todoRemove":
+      return {
+        ...state,
+        entities: state.entities.filter((todo) => todo.id !== action.payload),
+      };
     default:
       return state;
   }
 };
 
 const fetchTodos = async (dispatch, getState) => {
+  dispatch({ type: "todos/todosLoading" });
   const response = await client.get("/fakeApi/todos");
   console.log(response);
   dispatch({ type: "todos/todosLoaded", payload: response.todos });
 };
 
 const saveTodo = (text) => {
-  console.log("ok");
   const saveNewTodoThunk = async (dispatch, getState) => {
     const initialsTodo = { text };
     const response = await client.post("/fakeApi/todos", {
@@ -91,10 +122,9 @@ const selectTodoIds = createSelector(
 
 // will return list of filterd todos
 const selectFilteredTodos = createSelector(
-  (state) => state.todos,
+  (state) => state.todos.entities,
   (state) => state.filters,
   (todos, { status, colors }) => {
-    // todos.filter()
     const showAllCompletions = status === StatusFilters.All;
     if (showAllCompletions && colors.length === 0) {
       return todos;
@@ -108,14 +138,6 @@ const selectFilteredTodos = createSelector(
       const colorMatches = colors.length === 0 || colors.includes(todo.color);
       return statusMatches && colorMatches;
     });
-    // if (status === StatusFilters.All) return todos;
-    // const completed = status === StatusFilters.Completed ? true : false;
-    // console.log(colors, colors.includes("green"));
-    // return todos.filter(
-    //   (todo) =>
-    //     todo.completed === completed &&
-    //     (colors.includes(todo.color) || todo.color === "")
-    // );
   }
 );
 
@@ -125,6 +147,7 @@ const selectFilteredTodoIds = createSelector(
   (filteredTodos) => filteredTodos.map((todo) => todo.id)
 );
 
+// action wrapper
 const todosColorChanged = (todoId, color) => {
   console.log(todoId, color);
   return {
@@ -132,6 +155,8 @@ const todosColorChanged = (todoId, color) => {
     payload: { todoId, color },
   };
 };
+
+const selectTodos = (state) => state.todos.entities;
 
 export {
   fetchTodos,
@@ -141,4 +166,5 @@ export {
   selectFilteredTodos,
   selectFilteredTodoIds,
   todosColorChanged,
+  selectTodos,
 };

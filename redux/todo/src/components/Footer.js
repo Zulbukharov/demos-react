@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 import {
   availableColors,
-  capitalize,
   StatusFilters,
   colorFilterChanged,
 } from "../app/filters";
@@ -35,7 +34,9 @@ const Footer = () => {
   const dispatcher = useDispatch();
 
   const todosRemaining = useSelector((state) => {
-    const uncompletedTodos = state.todos.filter((todo) => !todo.completed);
+    const uncompletedTodos = state.todos.entities.filter(
+      (todo) => !todo.completed
+    );
     return uncompletedTodos.length;
   });
 
@@ -52,8 +53,7 @@ const Footer = () => {
     dispatcher(colorFilterChanged(value, checked));
   };
 
-  const { status, colors } = useSelector((state) => state.filters);
-  //   console.log(colors);
+  const { status } = useSelector((state) => state.filters);
   return (
     <footer>
       <div className="flex justify-between">
