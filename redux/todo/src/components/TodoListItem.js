@@ -39,13 +39,13 @@ const TodoListItem = ({ id }) => {
           >
             <span>Remove</span>
           </button>
-          <select onChange={handleColorChange}>
+          <select onChange={handleColorChange} defaultValue={todo.color}>
+            <option value=""></option>
             {availableColors.map((color, i) => (
               <option value={color} key={i}>
                 {color}
               </option>
             ))}
-            <option value="red"></option>
           </select>
           {/* <div onClick={handleCompletedChanged}>
             <dt className="sr-only">Done</dt>
