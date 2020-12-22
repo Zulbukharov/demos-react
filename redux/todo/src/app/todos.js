@@ -50,6 +50,9 @@ const todosReducer = (state = todoAppState, action) => {
       return state.map((todo) => {
         todo.color =
           todo.id === action.payload.todoId ? action.payload.color : todo.color;
+        console.log(
+          `1:${todo.color} 2:${todo.id} 3:${action.payload.todoId} 4:${action.payload.color}`
+        );
         return todo;
       });
     case "todos/todoRemove":
@@ -91,14 +94,28 @@ const selectFilteredTodos = createSelector(
   (state) => state.todos,
   (state) => state.filters,
   (todos, { status, colors }) => {
-    if (status === StatusFilters.All) return todos;
-    const completed = status === StatusFilters.Completed ? true : false;
-    console.log(colors, colors.includes("green"));
-    return todos.filter(
-      (todo) =>
-        todo.completed === completed &&
-        (colors.includes(todo.color) || todo.color === "")
-    );
+    // todos.filter()
+    const showAllCompletions = status === StatusFilters.All;
+    if (showAllCompletions && colors.length === 0) {
+      return todos;
+    }
+
+    const completedStatus = status === StatusFilters.Completed;
+    // Return either active or completed todos based on filter
+    return todos.filter((todo) => {
+      const statusMatches =
+        showAllCompletions || todo.completed === completedStatus;
+      const colorMatches = colors.length === 0 || colors.includes(todo.color);
+      return statusMatches && colorMatches;
+    });
+    // if (status === StatusFilters.All) return todos;
+    // const completed = status === StatusFilters.Completed ? true : false;
+    // console.log(colors, colors.includes("green"));
+    // return todos.filter(
+    //   (todo) =>
+    //     todo.completed === completed &&
+    //     (colors.includes(todo.color) || todo.color === "")
+    // );
   }
 );
 

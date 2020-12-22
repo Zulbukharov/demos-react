@@ -26,9 +26,8 @@ const filtersReducer = (state = initialState, action) => {
         case false:
           return {
             ...state,
-            colors: state.colors.splice(
-              state.colors.indexOf(action.payload.color),
-              1
+            colors: state.colors.filter(
+              (color) => color !== action.payload.color
             ),
           };
         case true:
